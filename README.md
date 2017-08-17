@@ -2,6 +2,14 @@
 ## How does k-Nearest Neighbors Work
 ---
 
+
+<blockquote>
+	
+	Working:  python knn.py
+	Default dataset: iris
+
+</blockquote>
+
 - The kNN algorithm is belongs to the family of instance-based, competitive learning and lazy learning algorithms.
 
 - Instance-based algorithms are those algorithms that model the problem using data instances (or rows) in order to make predictive decisions. The kNN algorithm is an extreme form of instance-based methods because all training observations are retained as part of the model.
