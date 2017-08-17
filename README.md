@@ -1,5 +1,5 @@
 
-##How does k-Nearest Neighbors Work
+## How does k-Nearest Neighbors Work
 ---
 
 - The kNN algorithm is belongs to the family of instance-based, competitive learning and lazy learning algorithms.
