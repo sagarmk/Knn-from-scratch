@@ -5,6 +5,7 @@
 This Github repository is about creating the K-Nearest Neighbor (KNN) algorithm from scratch.
  The code uses the iris dataset which is commonly used for testing machine learning algorithms. 
 
+![kNN Classifier Tool](images/knn_classifier.png)
 
 ## Execution
 1. Clone this repository to your local machine using the command: `git clone https://github.com/[your-username]/knn-iris-classifier.git`
@@ -18,4 +19,5 @@ This Github repository is about creating the K-Nearest Neighbor (KNN) algorithm 
     - Use the trained algorithm to generate predictions on the test set
     - Measure the accuracy of the predictions
     - Display the accuracy and predictions.
+
 

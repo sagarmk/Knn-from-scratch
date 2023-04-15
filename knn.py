@@ -2,7 +2,8 @@ import csv
 import random
 import math
 import operator
-
+import urllib.request
+import numpy as np
 
 class IrisDataset:
     """
@@ -33,16 +34,22 @@ class IrisDataset:
         Loads the Iris dataset into training and test sets
         by splitting the dataset according to the given split ratio.
         """
-        with open(self.filename, 'rt') as csvfile:
-            lines = csv.reader(csvfile)
+
+        with urllib.request.urlopen(self.filename) as response:
+            lines = csv.reader(response.read().decode('utf-8').splitlines())
             dataset = list(lines)
             for x in range(len(dataset) - 1):
                 for y in range(4):
                     dataset[x][y] = float(dataset[x][y])
+
                 if random.random() < self.split:
                     self.training_set.append(dataset[x])
                 else:
                     self.test_set.append(dataset[x])
+        
+        self.training_set = np.array(self.training_set)
+        self.test_set = np.array(self.test_set)
+
     
 
 class EuclideanDistance:
@@ -64,7 +71,8 @@ class EuclideanDistance:
         """
         distance = 0
         for x in range(length):
-            distance += pow((instance1[x] - instance2[x]), 2)
+            distance += pow((float(instance1[x]) - float(instance2[x])), 2)
+
         return math.sqrt(distance)
 
 
@@ -149,27 +157,32 @@ class Accuracy:
         return (correct / float(len(test_set)) * 100) 
 
 
-def main():
-    """Main function of the program that loads the dataset, runs the kNN classifier, 
-    and reports the accuracy of the classifier's predictions.
-    """
+def main(filename, split, k):
     # prepare data
-    iris = IrisDataset('iris.data', 0.67)
+    iris = IrisDataset(filename, split)
     iris.load_dataset()
-    print ('Train set: ' + repr(len(iris.training_set)))
-    print ('Test set: ' + repr(len(iris.test_set)))
-    
+
     # generate predictions
     predictions = []
-    k = 3
+    results = []
     for x in range(len(iris.test_set)):
         neighbors = Neighbors.select(iris.training_set, iris.test_set[x], k)
         result = Response.predict(neighbors)
         predictions.append(result)
-        print('> predicted=' + repr(result) + ', actual=' + repr(iris.test_set[x][-1]))
-    
+        results.append(f'> predicted={repr(result)}, actual={repr(iris.test_set[x][-1])}')
+
     accuracy = Accuracy.measure(iris.test_set, predictions)
-    print('Accuracy: ' + repr(accuracy) + '%')
+    results.append(f'Accuracy: {repr(accuracy)}%')
+
+    X_train = iris.training_set[:, :-1]
+    y_train = iris.training_set[:, -1]
+    X_test = iris.test_set[:, :-1]
+    y_test = iris.test_set[:, -1]
+
+    return X_train, y_train, X_test, y_test
+
+
+
     
 
 if __name__ == "__main__":
